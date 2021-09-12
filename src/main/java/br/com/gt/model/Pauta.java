@@ -71,5 +71,11 @@ public class Pauta {
 	public void setStatus(StatusPauta status) {
 		this.status = status;
 	}
+	public SituacaoPauta getSituacao() {
+		return Situacao;
+	}
+	public void setSituacao(SituacaoPauta situacao) {
+		Situacao = situacao;
+	}
 	
 }
