@@ -1,0 +1,49 @@
+package br.com.gt.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.com.gt.model.Associado;
+import br.com.gt.model.Voto;
+import br.com.gt.model.enumerator.VotoSessao;
+import br.com.gt.repository.AssociadoRepository;
+import br.com.gt.repository.PautaRepository;
+import br.com.gt.repository.VotoRepository;
+
+@Service
+public class VotoService {
+	
+	@Autowired
+	private VotoRepository repository;
+	@Autowired
+	private PautaRepository pautaRepository;
+	@Autowired
+	private AssociadoRepository associadoRepository;
+	
+	public void realizarVoto(Integer idPauta, String cpf, String opcaoVoto) {
+		// TODO Validar Cpf
+		
+		if(!pautaRepository.existsById(idPauta)) {
+			// TODO lançar erro
+		}
+		Associado associado;
+		if(associadoRepository.existsByCpf(cpf)) {
+			associado = (Associado) associadoRepository.findByCpf(cpf);
+		}else {
+			associado = new Associado();
+			associado.setCpf(cpf);
+			associado = associadoRepository.save(associado);
+		}
+		
+		Voto voto = (Voto) repository.findByIdPautaAndIdAssociado(idPauta, associado.getIdAssociado());
+		if(voto == null) {
+			voto = new Voto();
+			voto.setIdAssociado(associado.getIdAssociado());
+			voto.setIdPauta(idPauta);
+		}
+		voto.setVotoSessao(VotoSessao.valueOf(opcaoVoto));
+		repository.save(voto);
+		
+	}
+	
+}
