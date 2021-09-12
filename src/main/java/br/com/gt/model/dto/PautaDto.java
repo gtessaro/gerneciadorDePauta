@@ -1,0 +1,24 @@
+package br.com.gt.model.dto;
+
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value = "Pauta", description = "Objeto para facilitar a compreensão da criação de pautas.")
+public class PautaDto {
+	
+	private String titulo;
+	private String descricao;
+	
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+}
