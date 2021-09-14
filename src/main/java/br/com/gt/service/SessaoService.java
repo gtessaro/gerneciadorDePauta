@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.gt.exception.GenericException;
+import br.com.gt.exception.NotFoundException;
 import br.com.gt.model.Pauta;
 import br.com.gt.model.Sessao;
 import br.com.gt.model.enumerator.StatusPauta;
@@ -21,13 +23,27 @@ public class SessaoService {
 	private PautaRepository pautaRepository;
 	
 	public void criarSessao(Integer idPauta, Integer duracao) {
-		// TODO fazer verificação se pauta existe
+		if(!pautaRepository.existsById(idPauta)) {
+			throw new NotFoundException("Pauta não localizada para o id " + idPauta);
+		}
+		
+		Pauta pauta = pautaRepository.findById(idPauta).orElseThrow(null);
+		if(StatusPauta.AGUARDANDO.equals(pauta.getStatus())) {
+			throw new GenericException("Não é possivel abrir uma sessão para uma pauta com status "+pauta.getStatus().toString());
+		}
+		
+		if(duracao == null) {
+			duracao = new Integer(1);
+		}
+		
 		Sessao sessao = new Sessao();
 		sessao.setIdPauta(idPauta);
 		sessao.setDuracao(duracao);
 		sessao.setDataHoraInicio(LocalDateTime.now());
 		
 		repository.save(sessao);
+		
+		final Integer duracaoFinal = duracao;
 		
 		//TODO mover a resposabilidade de criar a thread 
 		Thread thread = new Thread() {
@@ -39,7 +55,7 @@ public class SessaoService {
 					pauta.setStatus(StatusPauta.ABERTA);
 					pautaRepository.save(pauta);
 					
-					Thread.sleep(duracao * 60 * 1000);
+					Thread.sleep(duracaoFinal * 60 * 1000);
 					
 					pauta.setStatus(StatusPauta.AGUARDANDO);
 					pautaRepository.save(pauta);
@@ -49,7 +65,6 @@ public class SessaoService {
 	            }
 			}
 		};
-		
 		thread.start();
 		
 	}
