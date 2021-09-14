@@ -27,11 +27,7 @@ public class VotoController {
 			@ApiParam(value = "Cpf do associado") @RequestParam String cpf,
 			@ApiParam(value = "Voto do associado (SIM,NAO)") @RequestParam String voto
 			) {
-    	try {
     		votoService.realizarVoto(idPauta, cpf,voto);
-    	} catch (NotFoundException e) {
-    		e.printStackTrace();
-    	}
     }
 	
 }
