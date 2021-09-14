@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.gt.exception.GenericException;
 import br.com.gt.exception.NotFoundException;
 import br.com.gt.model.Pauta;
 import br.com.gt.model.dto.PautaDto;
@@ -52,14 +53,14 @@ public class PautaService {
 		return repository.findAll();
 	}
 	
-	public Boolean permiteVotar(Integer idPauta) throws NotFoundException{
+	public Boolean permiteVotar(Integer idPauta){
 		if(!repository.existsById(idPauta)) {
 			throw new NotFoundException("Pauta não localizada para o id " + idPauta);
 		}
 		Pauta pauta = repository.findById(idPauta).orElse(new Pauta());
 		
 		if(!StatusPauta.ABERTA.equals(pauta.getStatus())) {
-			return false;
+			throw new GenericException("Não existe nenhuma sessão aberta para votação no momento.");
 		}
 		
 		return true;
