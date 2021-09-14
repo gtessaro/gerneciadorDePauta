@@ -42,6 +42,11 @@ public class Pauta {
 	@Enumerated(EnumType.STRING)
 	private StatusPauta status;
 	
+	@Column
+	private Integer votosSim;
+	@Column
+	private Integer votosNao;
+	
 	public Integer getIdPauta() {
 		return idPauta;
 	}
@@ -77,6 +82,18 @@ public class Pauta {
 	}
 	public void setSituacao(SituacaoPauta situacao) {
 		Situacao = situacao;
+	}
+	public Integer getVotosSim() {
+		return votosSim;
+	}
+	public void setVotosSim(Integer votosSim) {
+		this.votosSim = votosSim;
+	}
+	public Integer getVotosNao() {
+		return votosNao;
+	}
+	public void setVotosNao(Integer votosNao) {
+		this.votosNao = votosNao;
 	}
 	
 }
