@@ -74,7 +74,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 	public final ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) throws Exception {
 		
 		HttpHeaders headers = new HttpHeaders();
-		HttpStatus status = HttpStatus.NOT_FOUND;
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
 		return new ResponseEntity<>(ex.getMessage(), headers, status);
 		
