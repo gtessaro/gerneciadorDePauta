@@ -10,7 +10,9 @@ import br.com.gt.exception.GenericException;
 import br.com.gt.exception.NotFoundException;
 import br.com.gt.model.Pauta;
 import br.com.gt.model.dto.PautaDto;
+import br.com.gt.model.enumerator.SituacaoPauta;
 import br.com.gt.model.enumerator.StatusPauta;
+import br.com.gt.model.enumerator.VotoSessao;
 import br.com.gt.repository.PautaRepository;
 
 @Service
@@ -18,6 +20,9 @@ public class PautaService {
 	
 	@Autowired
 	private PautaRepository repository;
+	
+	@Autowired
+	private VotoService votoService;
 	
 	public Pauta novaPauta(PautaDto pautaDto) {
 		Pauta pauta = new Pauta();
@@ -33,8 +38,9 @@ public class PautaService {
 	public void concluirPauta(Integer idPauta) {
 		Pauta pauta = repository.getById(idPauta);
 		pauta.setStatus(StatusPauta.ENCERRADA);
-		
-		// TODO Calcular os votos, e retornar os dados da votação
+		pauta.setVotosSim(votoService.getVotosByPauta(idPauta, VotoSessao.SIM));
+		pauta.setVotosNao(votoService.getVotosByPauta(idPauta, VotoSessao.NAO));
+		pauta.setSituacao( pauta.getVotosSim()>pauta.getVotosNao()?SituacaoPauta.APROVADA:SituacaoPauta.NAO_APROVADA);
 		
 		repository.save(pauta);
 	}
