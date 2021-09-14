@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.com.gt.model.enumerator.SituacaoPauta;
 import br.com.gt.model.enumerator.StatusPauta;
 import io.swagger.annotations.ApiModel;
 
