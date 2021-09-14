@@ -28,7 +28,7 @@ public class SessaoService {
 		}
 		
 		Pauta pauta = pautaRepository.findById(idPauta).orElseThrow(null);
-		if(StatusPauta.AGUARDANDO.equals(pauta.getStatus())) {
+		if(!StatusPauta.AGUARDANDO.equals(pauta.getStatus())) {
 			throw new GenericException("Não é possivel abrir uma sessão para uma pauta com status "+pauta.getStatus().toString());
 		}
 		
