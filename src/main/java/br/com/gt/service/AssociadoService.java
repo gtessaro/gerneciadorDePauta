@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.gt.exception.GenericException;
 import br.com.gt.exception.NotFoundException;
+import br.com.gt.exception.UnauthorizedException;
 import br.com.gt.model.Associado;
 import br.com.gt.repository.AssociadoRepository;
 
@@ -24,7 +24,7 @@ public class AssociadoService {
 	
 	public Associado getAssociadoByCpf(String cpf) {
 		if(!isAssociadoHabilitadoVotacao(cpf)) {
-			throw new GenericException("Cpf inválido.");
+			throw new UnauthorizedException("Associado não está permitido a votar nesta pauta.");
 		}
 		
 		Associado associado;
@@ -42,8 +42,8 @@ public class AssociadoService {
     public boolean isAssociadoHabilitadoVotacao(String cpf) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String fooResourceUrl = "https://user-info.herokuapp.com/users/{cpf}";
-            ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class, cpf);
+            String validaAssociadoUrl = "https://user-info.herokuapp.com/users/{cpf}";
+            ResponseEntity<String> response = restTemplate.getForEntity(validaAssociadoUrl, String.class, cpf);
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.getBody());
