@@ -19,22 +19,14 @@ public class VotoService {
 	@Autowired
 	private PautaService pautaService;
 	@Autowired
-	private AssociadoRepository associadoRepository;
+	private AssociadoService associadoService;
 	
-	public void realizarVoto(Integer idPauta, String cpf, String opcaoVoto) throws NotFoundException{
-		// TODO Validar Cpf
-		
+	public void realizarVoto(Integer idPauta, String cpf, String opcaoVoto){
 		if(!pautaService.permiteVotar(idPauta)) {
 			throw new GenericException("Erro ao realizar voto.");
 		}
-		Associado associado;
-		if(associadoRepository.existsByCpf(cpf)) {
-			associado = (Associado) associadoRepository.findByCpf(cpf);
-		}else {
-			associado = new Associado();
-			associado.setCpf(cpf);
-			associado = associadoRepository.save(associado);
-		}
+		
+		Associado associado = associadoService.getAssociadoByCpf(cpf);
 		
 		Voto voto = (Voto) repository.findByIdPautaAndIdAssociado(idPauta, associado.getIdAssociado());
 		if(voto == null) {
@@ -44,7 +36,10 @@ public class VotoService {
 		}
 		voto.setVotoSessao(VotoSessao.valueOf(opcaoVoto));
 		repository.save(voto);
-		
+	}
+	
+	public Integer getVotosByPauta(Integer idPauta, VotoSessao voto) {
+		return repository.countByIdPautaAndVotoSessao(idPauta, voto);
 	}
 	
 }
