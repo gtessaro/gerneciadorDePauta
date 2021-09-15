@@ -23,13 +23,13 @@ public class VotoService {
 	private AssociadoService associadoService;
 	
 	public void realizarVoto(Integer idPauta, String cpf, String opcaoVoto){
-		
+
 		if(!pautaService.permiteVotar(idPauta)) {
 			throw new GenericException("Erro ao realizar voto.");
 		}
 		
 		Associado associado = associadoService.getAssociadoByCpf(cpf);
-		if(!repository.existsByIdPautaAndIdAssociado(idPauta, associado.getIdAssociado())) {
+		if(repository.existsByIdPautaAndIdAssociado(idPauta, associado.getIdAssociado())) {
 			throw new UnauthorizedException("O associado com cpf "+cpf+" já votou nesta pauta.");
 		}
 		
