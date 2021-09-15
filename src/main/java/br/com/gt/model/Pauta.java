@@ -35,6 +35,7 @@ public class Pauta {
 	private String descricao;
 
 	@Column
+	@Enumerated(EnumType.STRING)
 	private SituacaoPauta situacao;
 
 	@Column(name="data_criacao")
@@ -42,7 +43,8 @@ public class Pauta {
 	
 	@Column(name="data_encerramento")
 	private LocalDateTime dataEncerramento;
-	
+
+	@Column
 	@Enumerated(EnumType.STRING)
 	private StatusPauta status;
 	
