@@ -1,6 +1,6 @@
 package br.com.gt.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class PautaService {
 		
 		pauta.setDescricao(pautaDto.getDescricao());
 		pauta.setTitulo(pautaDto.getTitulo());
-		pauta.setDataCriacao(LocalDate.now());
+		pauta.setDataCriacao(LocalDateTime.now());
 		pauta.setStatus(StatusPauta.AGUARDANDO);
 		
 		return repository.save(pauta);
@@ -41,6 +41,7 @@ public class PautaService {
 		pauta.setVotosSim(votoService.getVotosByPauta(idPauta, VotoSessao.SIM));
 		pauta.setVotosNao(votoService.getVotosByPauta(idPauta, VotoSessao.NAO));
 		pauta.setSituacao( pauta.getVotosSim()>pauta.getVotosNao()?SituacaoPauta.APROVADA:SituacaoPauta.NAO_APROVADA);
+		pauta.setDataEncerramento(LocalDateTime.now());
 		
 		repository.save(pauta);
 	}
@@ -54,7 +55,7 @@ public class PautaService {
 	
 	public List<Pauta> listarPautas(String status){
 		
-		if(status != null && !"TODAS".equalsIgnoreCase(status))
+		if(status != null)
 			return repository.findByStatus(StatusPauta.valueOf(status));
 		return repository.findAll();
 	}

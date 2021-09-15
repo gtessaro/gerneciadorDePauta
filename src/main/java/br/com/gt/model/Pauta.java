@@ -1,6 +1,7 @@
 package br.com.gt.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,10 +35,13 @@ public class Pauta {
 	private String descricao;
 
 	@Column
-	private SituacaoPauta Situacao;
+	private SituacaoPauta situacao;
 
 	@Column(name="data_criacao")
-	private LocalDate dataCriacao;
+	private LocalDateTime dataCriacao;
+	
+	@Column(name="data_encerramento")
+	private LocalDateTime dataEncerramento;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusPauta status;
@@ -65,10 +69,10 @@ public class Pauta {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public LocalDate getDataCriacao() {
+	public LocalDateTime getDataCriacao() {
 		return dataCriacao;
 	}
-	public void setDataCriacao(LocalDate dataCriacao) {
+	public void setDataCriacao(LocalDateTime dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 	public StatusPauta getStatus() {
@@ -78,10 +82,10 @@ public class Pauta {
 		this.status = status;
 	}
 	public SituacaoPauta getSituacao() {
-		return Situacao;
+		return situacao;
 	}
 	public void setSituacao(SituacaoPauta situacao) {
-		Situacao = situacao;
+		this.situacao = situacao;
 	}
 	public Integer getVotosSim() {
 		return votosSim;
@@ -94,6 +98,12 @@ public class Pauta {
 	}
 	public void setVotosNao(Integer votosNao) {
 		this.votosNao = votosNao;
+	}
+	public LocalDateTime getDataEncerramento() {
+		return dataEncerramento;
+	}
+	public void setDataEncerramento(LocalDateTime dataEncerramento) {
+		this.dataEncerramento = dataEncerramento;
 	}
 	
 }
