@@ -32,8 +32,8 @@ public class SessaoService {
 			throw new GenericException("Não é possivel abrir uma sessão para uma pauta com status "+pauta.getStatus().toString());
 		}
 		
-		if(duracao == null) {
-			duracao = new Integer(1);
+		if(duracao == null || duracao<1) {
+			duracao = Integer.valueOf(1);
 		}
 		
 		Sessao sessao = new Sessao();
@@ -45,23 +45,23 @@ public class SessaoService {
 		
 		final Integer duracaoFinal = duracao;
 		
-		//TODO mover a resposabilidade de criar a thread 
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
 				try {
 					
-					Pauta pauta = pautaRepository.findById(idPauta).orElseThrow(null);
+					Pauta pauta = pautaRepository.findById(idPauta).orElseThrow(()->new NotFoundException("Pauta não localizada para o id " + idPauta));
 					pauta.setStatus(StatusPauta.ABERTA);
 					pautaRepository.save(pauta);
 					
-					Thread.sleep(duracaoFinal * 60 * 1000);
+					Thread.sleep(duracaoFinal * 60 * 1000L);
 					
 					pauta.setStatus(StatusPauta.AGUARDANDO);
 					pautaRepository.save(pauta);
 					
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
+	                Thread.currentThread().interrupt();
 	            }
 			}
 		};
