@@ -56,6 +56,10 @@ public class SessaoService {
 					
 					Thread.sleep(duracaoFinal * 60 * 1000L);
 					
+					pauta = pautaRepository.findById(idPauta).orElseThrow(()->new NotFoundException("Pauta não localizada para o id " + idPauta));
+					if(!StatusPauta.ABERTA.equals(pauta.getStatus())) {
+						return;
+					}
 					pauta.setStatus(StatusPauta.AGUARDANDO);
 					pautaRepository.save(pauta);
 					
