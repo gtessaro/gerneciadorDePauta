@@ -23,6 +23,8 @@ public class AssociadoService {
 	private AssociadoRepository repository;
 	
 	public Associado getAssociadoByCpf(String cpf) {
+		cpf = cpf.replace(".", "").replace("-", "");
+		
 		if(!isAssociadoHabilitadoVotacao(cpf)) {
 			throw new UnauthorizedException("Associado não está permitido a votar nesta pauta.");
 		}
