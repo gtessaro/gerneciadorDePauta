@@ -23,7 +23,10 @@ public class VotoService {
 	private AssociadoService associadoService;
 	
 	public void realizarVoto(Integer idPauta, String cpf, String opcaoVoto){
-
+		if(!"NAO".equalsIgnoreCase(opcaoVoto) && !"SIM".equalsIgnoreCase(opcaoVoto)) {
+			throw new GenericException("Apenas é permitido votar com SIM ou NAO.");
+		}
+		
 		if(!pautaService.permiteVotar(idPauta)) {
 			throw new GenericException("Erro ao realizar voto.");
 		}
