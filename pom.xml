@@ -60,6 +60,20 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+		   <groupId>org.vaadin.klaudeta</groupId>
+		   <artifactId>quill-editor</artifactId>
+		   <version>1.0.0</version>
+		</dependency>
+		<dependency>
+		   <groupId>com.github.appreciated</groupId>
+		   <artifactId>app-layout-addon</artifactId>
+		   <version>4.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -70,5 +84,21 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<repositories>
+		<repository>
+		   <id>vaadin-addons</id>
+		   <url>http://maven.vaadin.com/vaadin-addons</url>
+		</repository>
+	</repositories>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-bom</artifactId>
+				<version>14.7.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
